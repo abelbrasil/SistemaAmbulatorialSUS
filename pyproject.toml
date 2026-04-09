@@ -1,0 +1,37 @@
+[project]
+name = "01streamlit"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Abel Brasil",email = "abelbrasil88@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "pyreaddbc (>=1.2.0,<2.0.0)",
+    "pandas (>=2.2.2,<3.0.0)",
+    "pysus (>=1.0.1,<2.0.0)",
+    "requests (>=2.33.0,<3.0.0)",
+    "sqlalchemy (>=2.0.48,<3.0.0)",
+    "fastapi[standard] (>=0.135.2,<0.136.0)",
+    "streamlit (>=1.55.0,<2.0.0)",
+    "matplotlib (>=3.10.8,<4.0.0)",
+    "plotly (>=6.6.0,<7.0.0)",
+    "pytest (>=9.0.2,<10.0.0)"
+]
+
+[tool.poetry]
+name = "siasus-analytics"
+version = "0.1.0"
+description = ""
+authors = ["Abel Brasil"]
+
+packages = [
+    { include = "backend" },
+    { include = "scripts" },
+    { include = "pipeline" }
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
