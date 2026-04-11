@@ -8,7 +8,7 @@ import pandas as pd
 BASE_DIR = Path(__file__).resolve().parents[1]
 FILE_PATH = BASE_DIR / "data" / "gold" / "cnes_proc.parquet"
 
-THRESHOLD = 1  # 🔥 multiplicador do desvio padrão
+THRESHOLD = 2  # 🔥 multiplicador do desvio padrão
 
 # ==============================
 # TESTE

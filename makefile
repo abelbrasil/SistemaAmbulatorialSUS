@@ -127,7 +127,7 @@ git-all:
 #test: testes
 #refactor: refatoração
 #chore: manutenção
-# make git-all msg="fix: nova versão da dimensão calendário, novos testes e ajustes no pipeline e correçao dos testes"
+# make git-all msg="test: testar se o CI foi alterado para limite 1 com gitignore com tests/"
 
 # ==============================
 # AJUDA
