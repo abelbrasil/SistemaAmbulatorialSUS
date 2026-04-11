@@ -7,9 +7,10 @@ import pandas as pd
 
 BASE_DIR = Path.cwd()
 
-FILE_PATH = BASE_DIR / "data" / "gold" / "cnes_proc.parquet"
+# 🔥 AGORA USANDO SILVER (GRANULAR)
+FILE_PATH = BASE_DIR / "data" / "silver" / "PASIA.parquet"
 
-THRESHOLD = 0.7  
+THRESHOLD = 0.5  # 50%
 
 # ==============================
 # TESTE
@@ -17,8 +18,9 @@ THRESHOLD = 0.7
 
 def test_variacao_mensal_cnes():
     """
-    Verifica variação de volume mensal por CNES.
-    Cria flag de outlier (IS_OUTLIER).
+    Verifica variação de volume mensal por CNES com base no dataset granular (PASIA).
+
+    Detecta variações anormais no número de registros (linhas).
     Falha se variação > THRESHOLD.
     """
 
@@ -28,14 +30,27 @@ def test_variacao_mensal_cnes():
 
     threshold_pct = THRESHOLD * 100
 
+    print("\n📊 TOTAL REGISTROS BASE:", df.shape[0])
+
     # ==============================
-    # PASSO 1: AGRUPAR
+    # 🔥 GARANTIR TIPOS
+    # ==============================
+
+    df["PA_CODUNI"] = df["PA_CODUNI"].astype(str)
+    df["PA_MVM"] = df["PA_MVM"].astype(str)
+
+    # ==============================
+    # PASSO 1: AGRUPAR (VOLUME REAL)
     # ==============================
 
     df_grouped = (
-        df.groupby(["CNES", "MES"])
+        df.groupby(["PA_CODUNI", "PA_MVM"])
         .size()
         .reset_index(name="QTD_LINHAS")
+        .rename(columns={
+            "PA_CODUNI": "CNES",
+            "PA_MVM": "MES"
+        })
     )
 
     # ==============================
@@ -45,7 +60,7 @@ def test_variacao_mensal_cnes():
     df_grouped = df_grouped.sort_values(["CNES", "MES"])
 
     # ==============================
-    # PASSO 3: CALCULAR VARIAÇÃO
+    # PASSO 3: VARIAÇÃO MENSAL
     # ==============================
 
     df_grouped["QTD_ANTERIOR"] = (
@@ -58,7 +73,7 @@ def test_variacao_mensal_cnes():
     )
 
     # ==============================
-    # FLAG DE OUTLIER
+    # PASSO 4: FLAG OUTLIER
     # ==============================
 
     df_grouped["IS_OUTLIER"] = (
@@ -67,7 +82,7 @@ def test_variacao_mensal_cnes():
     )
 
     # ==============================
-    # DEBUG
+    # DEBUG COMPLETO
     # ==============================
 
     print(f"\n📊 DATAFRAME COMPLETO (threshold: {threshold_pct:.0f}%)")
@@ -86,7 +101,7 @@ def test_variacao_mensal_cnes():
     if not df_erro.empty:
         print(f"\n❌ Anomalias detectadas (variação > {threshold_pct:.0f}%)")
 
-        print("\n🔍 Amostra:")
+        print("\n🔍 OUTLIERS DETECTADOS:")
         print(
             df_erro[
                 [
@@ -97,11 +112,22 @@ def test_variacao_mensal_cnes():
                     "VARIACAO",
                     "IS_OUTLIER"
                 ]
-            ].head(10)
+            ]
         )
-    
+
+        # 🔥 RESUMO
+        resumo = (
+            df_erro.groupby("CNES")
+            .size()
+            .reset_index(name="QTD_OUTLIERS")
+            .sort_values("QTD_OUTLIERS", ascending=False)
+        )
+
+        print("\n📌 RESUMO POR CNES:")
+        print(resumo)
+
     else:
-        print("\n✅ Número de linhas mensal por CNES está dentro do limite esperado")
+        print("\n✅ Volume mensal por CNES está dentro do limite esperado")
 
     # ==============================
     # ASSERT

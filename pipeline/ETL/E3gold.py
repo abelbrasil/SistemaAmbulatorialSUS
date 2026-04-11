@@ -144,13 +144,42 @@ def run_gold():
     # DIMENSÃO CALENDÁRIO
     # ==============================
 
-    log("Gerando dim_calendario...")
+    log("Gerando dim_calendario (range completo)...")
 
-    dim_cal = ano_mes[["ANO", "MES"]].drop_duplicates().copy()
+    # 🔥 garantir formato string
+    df["PA_MVM"] = df["PA_MVM"].astype(str)
 
-    dim_cal["MES"] = dim_cal["MES"].astype(str)
-    dim_cal["ANO_NUM"] = dim_cal["ANO"].astype(int)
-    dim_cal["MES_NUM"] = dim_cal["MES"].str[4:6].astype(int)
+    # 🔥 obter range mínimo e máximo
+    min_mes = df["PA_MVM"].min()
+    max_mes = df["PA_MVM"].max()
+
+    log(f"[RANGE] {min_mes} → {max_mes}")
+
+    # 🔥 converter para datetime
+    dt_inicio = pd.to_datetime(min_mes, format="%Y%m")
+    dt_fim = pd.to_datetime(max_mes, format="%Y%m")
+
+    # 🔥 gerar sequência mensal completa
+    date_range = pd.date_range(start=dt_inicio, end=dt_fim, freq="MS")
+
+    # 🔥 construir dataframe base
+    dim_cal = pd.DataFrame({
+        "DATA": date_range
+    })
+
+    # ==============================
+    # DERIVAÇÕES
+    # ==============================
+
+    dim_cal["ANO_NUM"] = dim_cal["DATA"].dt.year
+    dim_cal["MES_NUM"] = dim_cal["DATA"].dt.month
+
+    dim_cal["ANO"] = dim_cal["ANO_NUM"].astype(str)
+
+    dim_cal["MES"] = (
+        dim_cal["ANO"] +
+        dim_cal["MES_NUM"].astype(str).str.zfill(2)
+    )
 
     mapa_meses = {
         1: "Jan", 2: "Fev", 3: "Mar", 4: "Abr",
@@ -166,10 +195,24 @@ def run_gold():
 
     dim_cal["ANO_MES"] = dim_cal["MES"]
 
-    dim_cal = dim_cal.sort_values("ANO_MES")
+    # 🔥 manter mesma estrutura anterior
+    dim_cal = dim_cal[
+        [
+            "ANO",
+            "MES",
+            "ANO_NUM",
+            "MES_NUM",
+            "MES_NOME",
+            "MES_ANO_LABEL",
+            "ANO_MES"
+        ]
+    ]
+
+    dim_cal = dim_cal.sort_values("ANO_MES").reset_index(drop=True)
 
     log(f"[DIM_CAL] {dim_cal.shape[0]} registros")
 
+    
     # ==============================
     # SALVAR
     # ==============================

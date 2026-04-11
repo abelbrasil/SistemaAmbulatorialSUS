@@ -94,6 +94,41 @@ test-dev:
 	tests/test_quality_number_anual.py \
 	tests/test_variacao_mensal.py
 
+
+# ==============================
+# GIT
+# ==============================
+
+git-status:
+	@echo "📌 Status do Git"
+	git status
+
+git-add:
+	@echo "➕ Adicionando arquivos"
+	git add .
+
+git-commit:
+	@echo "📝 Commitando alterações"
+	git commit -m "update: nova versão do projeto"
+
+git-push:
+	@echo "🚀 Enviando para o GitHub"
+	git push origin main
+
+git-all:
+	@echo "🚀 Subindo versão completa..."
+	git status
+	git add .
+	git commit -m "$(msg)"
+	git push origin main
+
+#feat: nova funcionalidade
+#fix: correção
+#test: testes
+#refactor: refatoração
+#chore: manutenção
+# make git-all msg="fix: nova versão da dimensão calendário, novos testes e ajustes no pipeline e correçao dos testes"
+
 # ==============================
 # AJUDA
 # ==============================

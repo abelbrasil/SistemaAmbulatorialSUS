@@ -39,12 +39,12 @@ def log(msg: str):
 # ==============================
 
 UF = "CE"
-YEAR = 2025
-MONTHS = [1,2]
+YEAR = 2024
+MONTHS = [1,2,3,4,5,6,7,8,9,10,11,12]
 
 COD_UNIDADES = ["2561492", "2481286"]
 
-RODAR_TUDO = False
+RODAR_TUDO = True
 PROCESSAR_ANO = None
 
 # 🔥 CONTROLE DE EXECUÇÃO (EVOLUÇÃO)
@@ -53,7 +53,6 @@ EXECUTAR_BRONZE = True # Bronze é o mais demorado, rodar apenas quando necessá
 EXECUTAR_SILVER = True # Silver é mais rápido, rodar sempre que rodar o pipeline (ex: nova regra de negócio, nova transformação, etc) 
 EXECUTAR_GOLD = True # Gold é o mais rápido, rodar sempre que rodar o pipeline (ex: nova regra de negócio, nova transformação, etc) 
 EXECUTAR_LOAD = True # Load é o mais rápido, rodar sempre que rodar o pipeline (ex: nova regra de negócio, nova transformação, etc)
-
 
 # ==============================
 # ORQUESTRADOR

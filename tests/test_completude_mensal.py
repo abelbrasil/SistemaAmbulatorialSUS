@@ -5,9 +5,10 @@ import pandas as pd
 # CONFIG
 # ==============================
 
-BASE_DIR = Path(__file__).resolve().parents[1]
+BASE_DIR = Path.cwd()
 
-CNES_FILE = BASE_DIR / "data" / "gold" / "cnes_proc.parquet"
+# 🔥 AGORA USANDO SILVER (BASE GRANULAR)
+PASIA_FILE = BASE_DIR / "data" / "silver" / "PASIA.parquet"
 CAL_FILE = BASE_DIR / "data" / "gold" / "dim_calendario.parquet"
 
 # ==============================
@@ -18,29 +19,44 @@ def test_completude_temporal_por_cnes():
     """
     Verifica se todos os CNES possuem todos os meses da dimensão calendário.
 
+    Base:
+        PASIA (dados granulares)
+
     Saídas:
-    - DataFrame base: CNES x MES existentes
-    - DataFrame faltantes: CNES x MES ausentes
+        - DataFrame base: CNES x MES existentes
+        - DataFrame faltantes: CNES x MES ausentes
     """
 
     # ==============================
-    # VALIDAÇÃO DE ARQUIVOS
+    # VALIDAÇÃO
     # ==============================
 
-    assert CNES_FILE.exists(), f"Arquivo não encontrado: {CNES_FILE}"
+    assert PASIA_FILE.exists(), f"Arquivo não encontrado: {PASIA_FILE}"
     assert CAL_FILE.exists(), f"Arquivo não encontrado: {CAL_FILE}"
 
-    df_cnes = pd.read_parquet(CNES_FILE)
+    df = pd.read_parquet(PASIA_FILE)
     df_cal = pd.read_parquet(CAL_FILE)
+
+    print("\n📊 TOTAL REGISTROS BASE:", df.shape[0])
+
+    # ==============================
+    # NORMALIZAÇÃO
+    # ==============================
+
+    df["PA_CODUNI"] = df["PA_CODUNI"].astype(str)
+    df["PA_MVM"] = df["PA_MVM"].astype(str)
 
     # ==============================
     # BASE ANALISADA (CNES x MES)
     # ==============================
 
     df_base = (
-        df_cnes[["CNES", "MES"]]
-        .astype(str)
+        df[["PA_CODUNI", "PA_MVM"]]
         .drop_duplicates()
+        .rename(columns={
+            "PA_CODUNI": "CNES",
+            "PA_MVM": "MES"
+        })
         .sort_values(["CNES", "MES"])
         .reset_index(drop=True)
     )
@@ -73,7 +89,7 @@ def test_completude_temporal_por_cnes():
             })
 
     # ==============================
-    # DATAFRAME DE FALTANTES
+    # DATAFRAME FALTANTES
     # ==============================
 
     df_faltantes = pd.DataFrame(registros_faltantes)
@@ -110,11 +126,11 @@ def test_completude_temporal_por_cnes():
         print("\n✅ Todos os CNES possuem todos os meses")
 
     # ==============================
-    # ASSERT FINAL
+    # ASSERT
     # ==============================
 
     assert df_faltantes.empty, (
         f"\nForam encontrados {df_faltantes.shape[0]} registros faltantes (CNES x MES)"
     )
-
+    
 #  poetry run pytest -s tests/test_completude_mensal.py # o -s é para mostrar os prints no console
