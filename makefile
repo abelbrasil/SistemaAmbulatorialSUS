@@ -127,7 +127,7 @@ git-all:
 #test: testes
 #refactor: refatoração
 #chore: manutenção
-# make git-all msg="test: testar se o CI foi alterado para limite 1 com gitignore com tests/"
+# make git-all msg="feat: incluir nova regra de cach no CI e permitir somente PRs aprovados"
 
 # ==============================
 # AJUDA

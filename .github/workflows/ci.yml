@@ -1,41 +1,66 @@
 name: CI Pipeline
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
 
     steps:
 
+      # ==============================
+      # CHECKOUT
+      # ==============================
       - name: 📥 Checkout código
         uses: actions/checkout@v4
 
+      # ==============================
+      # PYTHON
+      # ==============================
       - name: 🐍 Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: 📦 Instalar Poetry
-        run: |
-          pip install poetry
+      # ==============================
+      # CACHE POETRY (PERFORMANCE)
+      # ==============================
+      - name: ♻️ Cache Poetry
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
 
+      # ==============================
+      # INSTALAR POETRY
+      # ==============================
+      - name: 📦 Instalar Poetry
+        run: pip install poetry
+
+      # ==============================
+      # CONFIGURAR POETRY
+      # ==============================
       - name: 🔧 Configurar Poetry
         run: |
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
 
+      # ==============================
+      # INSTALAR DEPENDÊNCIAS
+      # ==============================
       - name: 📥 Instalar dependências
-        run: |
-          poetry install
+        run: poetry install --no-interaction --no-root
 
-      - name: 🧪 Rodar testes DEV (data quality)
+      # ==============================
+      # EXECUTAR TESTES
+      # ==============================
+      - name: 🧪 Rodar testes de qualidade de dados
         run: |
-          poetry run pytest -s tests/test_completude_mensal.py \
-                               tests/test_quality_number_anual.py \
-                               tests/test_variacao_mensal.py
+          poetry run pytest -s \
+            tests/test_completude_mensal.py \
+            tests/test_quality_number_anual.py \
+            tests/test_variacao_mensal.py
