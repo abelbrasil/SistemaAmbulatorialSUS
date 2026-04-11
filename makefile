@@ -129,6 +129,17 @@ git-all:
 #chore: manutenção
 # make git-all msg="feat: incluir nova regra de cach no CI e permitir somente PRs aprovados"
 
+
+# ==============================
+# BRANCH
+# ==============================
+
+#feature/ → nova funcionalidade
+#fix/ → correção
+#test/ → testes
+#hotfix/ → correção urgente
+
+
 # ==============================
 # AJUDA
 # ==============================
