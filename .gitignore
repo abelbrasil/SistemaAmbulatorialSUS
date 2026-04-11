@@ -12,6 +12,9 @@ __pycache__/
 data/arq_aux/
 data/bronze/
 
+# Testes
+tests/
+
 # Logs
 *.log
 
