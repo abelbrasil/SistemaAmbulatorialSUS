@@ -44,7 +44,7 @@ MONTHS = [1,2,3,4,5,6,7,8,9,10,11,12]
 
 COD_UNIDADES = ["2561492", "2481286"]
 
-RODAR_TUDO = True
+RODAR_TUDO = False # Rodar tudo é mais demorado, rodar apenas quando necessário (ex: nova regra de negócio, nova transformação, etc)
 PROCESSAR_ANO = None
 
 # 🔥 CONTROLE DE EXECUÇÃO (EVOLUÇÃO)

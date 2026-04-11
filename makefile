@@ -130,6 +130,27 @@ git-all:
 # make git-all msg="feat: incluir nova regra de cach no CI e permitir somente PRs aprovados"
 
 # ==============================
+# BRANCH
+# ==============================
+
+git-new-branch:
+	@echo "🌿 Criando nova branch: $(name)"
+	git checkout -b $(name)
+
+# make git-new-branch name=feature/test-ci
+
+#feature/ → nova funcionalidade
+#fix/ → correção
+#test/ → testes
+#hotfix/ → correção urgente
+
+# git log
+# git add .
+# git commit -m "testar o PR"
+# git push origin test/testedadosPR
+# git checkout main
+
+# ==============================
 # AJUDA
 # ==============================
 
