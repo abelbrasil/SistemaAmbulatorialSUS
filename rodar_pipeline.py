@@ -40,14 +40,13 @@ def log(msg: str):
 
 UF = "CE"
 YEAR = 2024
-MONTHS = [1,2,3,4,5,6,7,8,9,10,11,12]
+MONTHS = [1,2]
 
 COD_UNIDADES = ["2561492", "2481286"]
 
-
 # 🔥 CONTROLE DE EXECUÇÃO (EVOLUÇÃO)
-EXECUTAR_SETUP = False # Setup é mais demorado, rodar apenas quando necessário (ex: nova dimensão, nova pasta, etc)
-EXECUTAR_BRONZE = False # Bronze é o mais demorado, rodar apenas quando necessário (ex: nova UF, novo ano, etc)
+EXECUTAR_SETUP = True # Setup é mais demorado, rodar apenas quando necessário (ex: nova dimensão, nova pasta, etc)
+EXECUTAR_BRONZE = True # Bronze é o mais demorado, rodar apenas quando necessário (ex: nova UF, novo ano, etc)
 
 # Parametros para controle de execução do Silver e Gold, rodar sempre que rodar o pipeline (ex: nova regra de negócio, nova transformação, etc)
 RODAR_TUDO = False # Rodar tudo é mais demorado, rodar apenas quando necessário (ex: nova regra de negócio, nova transformação, etc)

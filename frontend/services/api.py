@@ -1,7 +1,8 @@
 import requests
 import pandas as pd
 
-API = "http://127.0.0.1:8000/api"
+#API = "http://127.0.0.1:8000/api"
+API = "http://backend:8000/api"
 
 # ==============================
 # BASE REQUEST

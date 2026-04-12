@@ -213,8 +213,8 @@ fig_mes_val = px.line(
 
 fig_mes_val.update_layout(xaxis=dict(type="category"))
 
-col1.plotly_chart(fig_mes_qtd, use_container_width=True)
-col2.plotly_chart(fig_mes_val, use_container_width=True)
+col1.plotly_chart(fig_mes_qtd, width="stretch")
+col2.plotly_chart(fig_mes_val, width="stretch")
 
 # ==============================
 # 📊 GRÁFICOS POR ANO (COLUNA)
@@ -240,8 +240,8 @@ fig_ano_val = px.bar(
 
 fig_ano_val.update_layout(xaxis=dict(type="category"))
 
-col1.plotly_chart(fig_ano_qtd, use_container_width=True)
-col2.plotly_chart(fig_ano_val, use_container_width=True)
+col1.plotly_chart(fig_ano_qtd, width="stretch")
+col2.plotly_chart(fig_ano_val, width="stretch")
 
 # ==============================
 # 🏥 GRÁFICOS POR ESTABELECIMENTO
@@ -257,7 +257,7 @@ fig_cnes_qtd = px.bar(
     color_discrete_sequence=["blue"]
 )
 
-st.plotly_chart(fig_cnes_qtd, use_container_width=True)
+st.plotly_chart(fig_cnes_qtd, width="stretch")
 
 fig_cnes_val = px.bar(
     df_cnes,
@@ -267,7 +267,7 @@ fig_cnes_val = px.bar(
     color_discrete_sequence=["red"]
 )
 
-st.plotly_chart(fig_cnes_val, use_container_width=True)
+st.plotly_chart(fig_cnes_val, width="stretch")
 
 # ==============================
 # 📋 LISTA DE PROCEDIMENTOS
@@ -277,5 +277,5 @@ st.subheader("📋 Procedimentos")
 
 st.dataframe(
     df_proc.sort_values("quantidade", ascending=False),
-    use_container_width=True
+    width="stretch"
 )
