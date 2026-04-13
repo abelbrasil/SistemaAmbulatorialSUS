@@ -39,7 +39,7 @@ Pipeline (ETL) → Dados (Parquet / SQLite) → Backend (API) → Frontend
     docker image prune -a -f
     docker volume prune -f
     rm -rf data
-    
+
     docker-compose build --no-cache
     docker-compose up -d
 
@@ -51,7 +51,7 @@ Pipeline (ETL) → Dados (Parquet / SQLite) → Backend (API) → Frontend
 
 # 🌐 Acesso
 
--   API: http://localhost:8000/docs\
+-   API: http://localhost:8000/docs
 -   Dashboard: http://localhost:8501
 
 ------------------------------------------------------------------------
