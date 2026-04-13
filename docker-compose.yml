@@ -1,39 +1,81 @@
-
 services:
 
+  # ==============================
+  # BACKEND
+  # ==============================
   backend:
     build:
       context: .
       dockerfile: backend/Dockerfile
     container_name: backend_api
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env
     volumes:
-      - ./data:/app/data   # 🔥 persistência (SQLite + arquivos pipeline)
+      - data_volume:/app/data
     ports:
       - "8000:8000"
+    networks:
+      - app_network
     command: >
       uvicorn backend.main:app
       --host 0.0.0.0
       --port 8000
-      --reload
 
+  # ==============================
+  # FRONTEND
+  # ==============================
   frontend:
     build:
       context: .
       dockerfile: frontend/Dockerfile
     container_name: frontend_app
-    restart: always
+    restart: unless-stopped
     depends_on:
       - backend
     env_file:
       - .env
     volumes:
-      - ./data:/app/data
+      - data_volume:/app/data
     ports:
       - "8501:8501"
+    networks:
+      - app_network
     command: >
       streamlit run frontend/app.py
       --server.port=8501
       --server.address=0.0.0.0
+
+  # ==============================
+  # PIPELINE (JOB)
+  # ==============================
+  pipeline:
+    build:
+      context: .
+      dockerfile: pipeline/Dockerfile
+    container_name: pipeline_job
+    env_file:
+      - .env
+    volumes:
+      - data_volume:/app/data
+    depends_on:
+      - backend
+    networks:
+      - app_network
+    # executado via:
+    # docker-compose run --rm pipeline
+
+# ==============================
+# NETWORK
+# ==============================
+
+networks:
+  app_network:
+    driver: bridge
+
+# ==============================
+# VOLUMES
+# ==============================
+
+volumes:
+  data_volume:
