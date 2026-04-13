@@ -33,12 +33,19 @@ Pipeline (ETL) → Dados (Parquet / SQLite) → Backend (API) → Frontend
 
 ------------------------------------------------------------------------
 
-# 🚀 Execução Completa
+# 🚀 Reset do ambiente
 
     docker-compose down --volumes --remove-orphans
     docker image prune -a -f
     docker volume prune -f
     rm -rf data
+
+# 🚀 Execução Completa
+
+    git clone https://github.com/abelbrasil/SistemaAmbulatorialSUS.git
+    cd SistemaAmbulatorialSUS
+
+    cp .env.example .env 
 
     docker-compose build --no-cache
     docker-compose up -d
@@ -46,6 +53,14 @@ Pipeline (ETL) → Dados (Parquet / SQLite) → Backend (API) → Frontend
     sleep 5
 
     docker-compose run --rm pipeline
+
+------------------------------------------------------------------------
+
+# 🐳 Validação
+
+    docker ps
+    docker logs backend_api
+    docker-compose exec backend ls /app/data
 
 ------------------------------------------------------------------------
 
