@@ -1,7 +1,7 @@
 services:
 
   # ==============================
-  # BACKEND
+  # BACKEND (API)
   # ==============================
   backend:
     build:
@@ -17,13 +17,9 @@ services:
       - "8000:8000"
     networks:
       - app_network
-    command: >
-      uvicorn backend.main:app
-      --host 0.0.0.0
-      --port 8000
 
   # ==============================
-  # FRONTEND
+  # FRONTEND (STREAMLIT)
   # ==============================
   frontend:
     build:
@@ -41,13 +37,9 @@ services:
       - "8501:8501"
     networks:
       - app_network
-    command: >
-      streamlit run frontend/app.py
-      --server.port=8501
-      --server.address=0.0.0.0
 
   # ==============================
-  # PIPELINE (JOB)
+  # PIPELINE (ETL)
   # ==============================
   pipeline:
     build:
@@ -58,24 +50,18 @@ services:
       - .env
     volumes:
       - data_volume:/app/data
-    depends_on:
-      - backend
     networks:
       - app_network
-    # executado via:
-    # docker-compose run --rm pipeline
 
 # ==============================
-# NETWORK
+# REDE
 # ==============================
-
 networks:
   app_network:
     driver: bridge
 
 # ==============================
-# VOLUMES
+# VOLUME (DADOS)
 # ==============================
-
 volumes:
   data_volume:
