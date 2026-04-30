@@ -71,12 +71,6 @@ Pipeline (ETL) → Dados (Parquet / SQLite) → Backend (API) → Frontend
 
 ------------------------------------------------------------------------
 
-# 🔄 Pipeline
-
-    docker-compose run --rm pipeline
-
-------------------------------------------------------------------------
-
 # 🧪 Testes
 
     make test
@@ -93,4 +87,4 @@ Pipeline (ETL) → Dados (Parquet / SQLite) → Backend (API) → Frontend
 
 # 👨‍💻 Autor
 
-Projeto de análise de dados do DATASUS.
+Abel Brasil Ramos da Silva
