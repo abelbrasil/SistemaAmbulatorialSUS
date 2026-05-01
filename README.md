@@ -35,7 +35,7 @@ Pipeline (ETL) → Dados (Parquet / SQLite) → Backend (API) → Frontend
 
 # 🚀 Reset do ambiente
 
-    docker-compose down --volumes --remove-orphans
+    docker compose down --volumes --remove-orphans
     docker image prune -a -f
     docker volume prune -f
     rm -rf data
@@ -47,12 +47,10 @@ Pipeline (ETL) → Dados (Parquet / SQLite) → Backend (API) → Frontend
 
     cp .env.example .env 
 
-    docker-compose build --no-cache
-    docker-compose up -d
+    docker compose build --no-cache
+    docker compose up -d
 
-    sleep 5
-
-    docker-compose run --rm pipeline
+    docker compose run --rm pipeline
 
 ------------------------------------------------------------------------
 
